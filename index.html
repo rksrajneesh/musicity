@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/apple-icon-76x76.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <title>Vocalify</title>
+</head>
+<body style="margin: 0px; overflow: hidden;">
+
+    <a-scene embedded arjs="detectionMode: mono_and_matrix; matrixCodeType: 3x3; debugUIEnabled: false">
+        <a-assets>
+            <img id="drums" src="/assets/drums.png"></img>
+            <img id="guitar" src="/assets/guitar.png"></img>
+            <img id="mic" src="/assets/mic.jpg"></img>
+            <img id="piano" src="/assets/piano.gif"></img>
+        </a-assets>
+        <a-marker id="drum-marker" type="barcode" value="0">
+            <a-image src="#drums" rotation = "90 0 0"></a-image>
+        </a-marker>
+        <a-marker id="guitar-marker" type="barcode" value="1">
+            <a-image src="#guitar" rotation = "90 0 0"></a-image>
+        </a-marker>
+        <a-marker id="mic-marker" type="barcode" value="2">
+            <a-image src="#mic" rotation = "90 0 0"></a-image>
+        </a-marker>
+        <a-marker id="piano-marker" type="barcode" value="3">
+            <a-image src="#piano" rotation = "90 0 0"></a-image>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+</body>
+<script>
+    var drums = new Howl({
+        src: ['/audio/audio_drums.mp3']
+    });
+    var guitar = new Howl({
+        src: ['/audio/audio_guitar.mp3']
+    });
+    var mic = new Howl({
+        src: ['/audio/audio_mic.mp3']
+    });
+    var piano = new Howl({
+        src: ['/audio/audio_piano.mp3']
+    });
+    
+    drums.play();
+    guitar.play();
+    mic.play();
+    piano.play();
+
+    function removeDrums(){
+        drums.mute(true);
+    }
+    function addDrums(){
+        drums.mute(false);
+    }
+    function removeGuitar(){
+        guitar.mute(true);
+    }
+    function addGuitar(){
+        guitar.mute(false);
+    }
+    function removeMic(){
+        mic.mute(true);
+    }
+    function addMic(){
+        mic.mute(false);
+    }
+    function removePiano(){
+        piano.mute(true);
+    }
+    function addPiano(){
+        piano.mute(false);
+    }
+
+    window.onload = function(){
+        var drumMarker = document.getElementById('drum-marker');
+        drumMarker.addEventListener('markerFound', ()=>{
+            addDrums();
+        })
+        drumMarker.addEventListener('markerLost', ()=>{
+            removeDrums();
+        })
+
+        var guitarMarker = document.getElementById('guitar-marker');
+        guitarMarker.addEventListener('markerFound', ()=>{
+            addGuitar();
+        })
+        guitarMarker.addEventListener('markerLost', ()=>{
+            removeGuitar();
+        })
+
+        var micMarker = document.getElementById('mic-marker');
+        micMarker.addEventListener('markerFound', ()=>{
+            addMic();
+        })
+        micMarker.addEventListener('markerLost', ()=>{
+            removeMic();
+        })
+
+        var pianoMarker = document.getElementById('piano-marker');
+        pianoMarker.addEventListener('markerFound', ()=>{
+            addPiano();
+        })
+        pianoMarker.addEventListener('markerLost', ()=>{
+            removePiano();
+        })
+    }
+</script>
+</html>
